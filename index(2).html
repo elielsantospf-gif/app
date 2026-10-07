@@ -1,0 +1,3274 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f97316">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Central de Produtividade">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+
+<title>Central de Produtividade</title>
+
+<link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap">
+
+<style>
+:root{
+  --bg:#f4f4f5;
+  --col:#e7e7e9;
+  --card:#ffffff;
+  --ink:#171717;
+  --mute:#666b73;
+  --line:#d5d5d8;
+
+  --acc:#f97316;
+  --acc-hover:#ea580c;
+  --acc-light:#fff1e8;
+  --accink:#ffffff;
+
+  --black:#111111;
+  --late:#dc2626;
+  --soon:#d97706;
+
+  --trab:#f97316;
+  --est:#0d8a6a;
+  --pes:#b85a12;
+
+  --alta:#dc3545;
+  --media:#e3a420;
+  --baixa:#aeb6c1;
+
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0d0d0e;
+    --col:#171719;
+    --card:#202023;
+    --ink:#f5f5f5;
+    --mute:#a1a1aa;
+    --line:#343438;
+
+    --acc:#fb923c;
+    --acc-hover:#f97316;
+    --acc-light:#2b1a0f;
+    --accink:#111111;
+
+    --late:#ff6b7a;
+    --soon:#f5b942;
+
+    --trab:#fb923c;
+    --est:#4fd1ac;
+    --pes:#f1995a;
+
+    --baixa:#59616c;
+  }
+}
+
+:root[data-theme="dark"]{
+  --bg:#0d0d0e;
+  --col:#171719;
+  --card:#202023;
+  --ink:#f5f5f5;
+  --mute:#a1a1aa;
+  --line:#343438;
+
+  --acc:#fb923c;
+  --acc-hover:#f97316;
+  --acc-light:#2b1a0f;
+  --accink:#111111;
+
+  --late:#ff6b7a;
+  --soon:#f5b942;
+
+  --trab:#fb923c;
+  --est:#4fd1ac;
+  --pes:#f1995a;
+
+  --baixa:#59616c;
+}
+
+html{
+  height:100%;
+  scroll-padding-top:env(safe-area-inset-top,0px);
+}
+
+*{
+  box-sizing:border-box;
+}
+
+[hidden]{
+  display:none!important;
+}
+
+body{
+  margin:0;
+  min-height:100%;
+  background:
+    radial-gradient(circle at top right,rgba(249,115,22,.08),transparent 30%),
+    var(--bg);
+  color:var(--ink);
+  font:400 15px/1.4 Figtree,system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+
+button,
+input,
+select,
+textarea{
+  font:inherit;
+  color:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+button:disabled{
+  cursor:not-allowed;
+  opacity:.5;
+}
+
+:focus-visible{
+  outline:2px solid var(--acc);
+  outline-offset:2px;
+}
+
+/* =========================
+   TOPO
+========================= */
+
+.top{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px 18px;
+  align-items:center;
+  padding:20px 24px 10px;
+  border-bottom:1px solid var(--line);
+  background:color-mix(in srgb,var(--bg) 94%,transparent);
+  backdrop-filter:blur(12px);
+  position:sticky;
+  top:0;
+  z-index:20;
+}
+
+h1{
+  font-size:26px;
+  font-weight:800;
+  letter-spacing:-.04em;
+  margin:0 auto 0 0;
+}
+
+h1::after{
+  content:"";
+  display:inline-block;
+  width:7px;
+  height:7px;
+  margin-left:5px;
+  margin-bottom:2px;
+  border-radius:50%;
+  background:var(--acc);
+  box-shadow:0 0 12px color-mix(in srgb,var(--acc) 60%,transparent);
+}
+
+.tabs{
+  display:flex;
+  gap:4px;
+  flex-wrap:wrap;
+}
+
+.tab{
+  padding:8px 14px;
+  border:0;
+  border-radius:9px;
+  background:transparent;
+  font-weight:600;
+  color:var(--mute);
+  transition:.2s ease;
+}
+
+.tab:hover{
+  color:var(--ink);
+  background:color-mix(in srgb,var(--ink) 7%,transparent);
+}
+
+.tab[aria-selected="true"]{
+  background:var(--black);
+  color:#fff;
+  box-shadow:0 4px 12px rgba(0,0,0,.16);
+}
+
+.tools{
+  display:flex;
+  flex-wrap:wrap;
+  gap:9px;
+  align-items:center;
+  padding:12px 24px 6px;
+}
+
+.search,
+.qa input,
+.f input,
+.f select{
+  padding:9px 12px;
+  border:1px solid var(--line);
+  border-radius:9px;
+  background:var(--card);
+  transition:.2s ease;
+}
+
+.search:focus,
+.qa input:focus,
+.f input:focus,
+.f select:focus,
+.f textarea:focus,
+.foco select:focus,
+.foco input:focus,
+.sum input:focus,
+.hf input:focus{
+  border-color:var(--acc);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--acc) 14%,transparent);
+  outline:none;
+}
+
+.search{
+  width:210px;
+}
+
+.chips{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+}
+
+.chip{
+  padding:7px 13px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:var(--card);
+  font-weight:600;
+  transition:.2s ease;
+}
+
+.chip:hover{
+  border-color:var(--acc);
+  color:var(--acc);
+}
+
+.chip[aria-pressed="true"]{
+  background:var(--black);
+  color:#fff;
+  border-color:var(--black);
+}
+
+/* =========================
+   BOTÕES
+========================= */
+
+.btn{
+  padding:9px 15px;
+  border:1px solid var(--line);
+  border-radius:9px;
+  background:var(--card);
+  font-weight:600;
+  transition:
+    background .2s ease,
+    border-color .2s ease,
+    transform .15s ease,
+    box-shadow .2s ease;
+}
+
+.btn:hover{
+  border-color:var(--acc);
+  transform:translateY(-1px);
+}
+
+.btn.pri{
+  background:var(--acc);
+  color:var(--accink);
+  border-color:var(--acc);
+  font-weight:700;
+  box-shadow:0 5px 14px color-mix(in srgb,var(--acc) 25%,transparent);
+}
+
+.btn.pri:hover{
+  background:var(--acc-hover);
+  border-color:var(--acc-hover);
+  box-shadow:0 7px 18px color-mix(in srgb,var(--acc) 32%,transparent);
+}
+
+.btn.del{
+  color:var(--late);
+  margin-right:auto;
+}
+
+/* =========================
+   ÁREA PRINCIPAL
+========================= */
+
+#view{
+  padding:12px 24px 32px;
+  max-width:100%;
+}
+
+.scroll,
+.board{
+  overflow-x:auto;
+  max-width:100%;
+}
+
+.board{
+  display:flex;
+  gap:16px;
+  align-items:flex-start;
+  padding:4px 2px 14px;
+}
+
+.col{
+  flex:0 0 290px;
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb,var(--col) 96%,var(--acc) 4%),
+      var(--col)
+    );
+  border:1px solid color-mix(in srgb,var(--line) 80%,transparent);
+  border-radius:14px;
+  padding:11px;
+  box-shadow:0 3px 12px rgba(0,0,0,.04);
+  transition:.2s ease;
+}
+
+.col:hover{
+  box-shadow:0 7px 22px rgba(0,0,0,.07);
+}
+
+.col.over{
+  box-shadow:
+    0 0 0 2px var(--acc),
+    0 10px 30px color-mix(in srgb,var(--acc) 15%,transparent);
+}
+
+.col header{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:3px 4px 10px;
+}
+
+.col h2{
+  font-size:15px;
+  font-weight:700;
+  margin:0;
+  flex:1;
+  padding:4px 5px;
+  border-radius:7px;
+  min-width:0;
+  overflow-wrap:anywhere;
+}
+
+.col h2:focus{
+  outline:2px solid var(--acc);
+  background:var(--card);
+}
+
+.n{
+  font-size:12px;
+  font-weight:700;
+  color:var(--mute);
+  background:color-mix(in srgb,var(--card) 70%,transparent);
+  border-radius:999px;
+  padding:3px 7px;
+}
+
+.ico{
+  border:0;
+  background:transparent;
+  color:var(--mute);
+  font-size:12px;
+  padding:4px 6px;
+  border-radius:6px;
+  transition:.2s ease;
+}
+
+.ico:hover{
+  color:var(--late);
+  background:color-mix(in srgb,var(--late) 8%,transparent);
+}
+
+.list{
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+  min-height:44px;
+}
+
+.empty{
+  margin:0;
+  padding:14px;
+  text-align:center;
+  color:var(--mute);
+  font-size:13px;
+  border:1px dashed var(--line);
+  border-radius:9px;
+}
+
+/* =========================
+   CARDS
+========================= */
+
+.card{
+  background:var(--card);
+  border-radius:10px;
+  padding:11px 13px;
+  border-left:4px solid var(--baixa);
+  box-shadow:
+    0 2px 4px rgba(20,30,50,.07),
+    0 7px 18px rgba(20,30,50,.035);
+  cursor:pointer;
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease;
+}
+
+.card:hover{
+  transform:translateY(-2px);
+  box-shadow:
+    0 5px 10px rgba(20,30,50,.08),
+    0 12px 26px rgba(20,30,50,.06);
+}
+
+.card.p-alta{
+  border-left-color:var(--alta);
+}
+
+.card.p-media{
+  border-left-color:var(--media);
+}
+
+.card.drag{
+  opacity:.4;
+  transform:rotate(1deg);
+}
+
+.card .t{
+  font-weight:700;
+  overflow-wrap:anywhere;
+}
+
+.t.dn{
+  text-decoration:line-through;
+  color:var(--mute);
+}
+
+.card p{
+  margin:5px 0 0;
+  color:var(--mute);
+  font-size:13.5px;
+  overflow-wrap:anywhere;
+}
+
+.meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  align-items:center;
+  margin-top:9px;
+  font-size:12px;
+}
+
+.tag{
+  --c:var(--mute);
+  color:var(--c);
+  background:color-mix(in srgb,var(--c) 14%,transparent);
+  padding:3px 8px;
+  border-radius:999px;
+  font-weight:700;
+}
+
+.tag.trabalho{
+  --c:var(--trab);
+}
+
+.tag.estudos{
+  --c:var(--est);
+}
+
+.tag.pessoal{
+  --c:var(--pes);
+}
+
+.due,
+.pr{
+  color:var(--mute);
+}
+
+.due.late{
+  color:var(--late);
+  font-weight:700;
+}
+
+.due.soon{
+  color:var(--soon);
+  font-weight:700;
+}
+
+.pr{
+  margin-left:auto;
+  font-weight:600;
+}
+
+.add,
+.newcol{
+  width:100%;
+  margin-top:9px;
+  padding:9px;
+  border:0;
+  background:transparent;
+  color:var(--mute);
+  border-radius:9px;
+  text-align:left;
+  font-weight:600;
+  transition:.2s ease;
+}
+
+.add:hover,
+.newcol:hover{
+  background:var(--card);
+  color:var(--acc);
+}
+
+.newcol{
+  flex:0 0 200px;
+  border:1px dashed var(--line);
+  text-align:center;
+  margin:0;
+  padding:13px;
+}
+
+/* =========================
+   TAREFAS
+========================= */
+
+.qa{
+  display:flex;
+  gap:8px;
+  margin:0 0 14px;
+  flex-wrap:wrap;
+}
+
+.qa input{
+  flex:1;
+  min-width:160px;
+}
+
+.tl{
+  list-style:none;
+  margin:0;
+  padding:0;
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+  max-width:760px;
+}
+
+.tl li{
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px 10px;
+  align-items:center;
+}
+
+.tl .meta{
+  flex-basis:100%;
+  margin-left:28px;
+}
+
+/* =========================
+   CHECKBOX
+========================= */
+
+.tl input[type=checkbox],
+.tb input[type=checkbox]{
+  width:18px;
+  height:18px;
+  accent-color:var(--acc);
+  cursor:pointer;
+}
+
+/* =========================
+   HÁBITOS / TABELAS
+========================= */
+
+.tb{
+  border-collapse:collapse;
+  width:100%;
+  max-width:900px;
+  background:var(--card);
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 4px 18px rgba(0,0,0,.04);
+}
+
+.tb th,
+.tb td{
+  padding:9px 11px;
+  text-align:center;
+  border-bottom:1px solid var(--line);
+  white-space:nowrap;
+}
+
+.tb th:first-child,
+.tb td:first-child{
+  text-align:left;
+}
+
+.tb th{
+  font-weight:700;
+  color:var(--mute);
+  font-size:12.5px;
+}
+
+.tb th.now{
+  color:var(--acc);
+}
+
+/* =========================
+   SEMANA
+========================= */
+
+.wk{
+  display:grid;
+  grid-template-columns:repeat(7,minmax(150px,1fr));
+  gap:11px;
+  min-width:1100px;
+}
+
+.day{
+  background:var(--col);
+  border:1px solid color-mix(in srgb,var(--line) 70%,transparent);
+  border-radius:13px;
+  padding:11px;
+  min-height:210px;
+  transition:.2s ease;
+}
+
+.day:hover{
+  box-shadow:0 6px 20px rgba(0,0,0,.06);
+}
+
+.day.now{
+  box-shadow:
+    0 0 0 2px var(--acc),
+    0 7px 20px color-mix(in srgb,var(--acc) 10%,transparent);
+}
+
+.day h3{
+  margin:0 0 9px;
+  font-size:15px;
+}
+
+.day small{
+  color:var(--mute);
+  font-weight:400;
+}
+
+.blk{
+  background:var(--card);
+  border-radius:9px;
+  padding:7px 9px;
+  margin-bottom:7px;
+  font-size:13.5px;
+  cursor:pointer;
+  overflow-wrap:anywhere;
+  box-shadow:0 2px 6px rgba(0,0,0,.04);
+}
+
+.blk:hover{
+  box-shadow:0 4px 12px rgba(0,0,0,.08);
+}
+
+.blk b{
+  display:block;
+  font-size:12.5px;
+  color:var(--acc);
+}
+
+.blk.tk{
+  border-left:3px solid var(--late);
+}
+
+/* =========================
+   FOCO
+========================= */
+
+.foco{
+  max-width:460px;
+  margin:10px auto 0;
+  text-align:center;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:22px;
+  box-shadow:0 10px 35px rgba(0,0,0,.06);
+}
+
+.clock{
+  font-size:88px;
+  font-weight:800;
+  letter-spacing:-.05em;
+  font-variant-numeric:tabular-nums;
+  margin:17px 0;
+  color:var(--ink);
+}
+
+.clock::first-letter{
+  color:var(--acc);
+}
+
+.c{
+  justify-content:center;
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.foco label,
+.f label,
+.sum label{
+  display:block;
+  font-size:13px;
+  font-weight:700;
+  color:var(--mute);
+  margin:13px 0 5px;
+  text-align:left;
+}
+
+.foco select,
+.foco input,
+.sum input{
+  width:100%;
+  padding:9px 11px;
+  border:1px solid var(--line);
+  border-radius:9px;
+  background:var(--card);
+}
+
+.row3{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+}
+
+.note{
+  font-size:13px;
+  color:var(--mute);
+  margin:9px 0;
+}
+
+.sec{
+  margin:20px 0 8px;
+  font-size:16px;
+}
+
+.sum{
+  max-width:440px;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:6px 15px 15px;
+  margin-top:20px;
+}
+
+.res{
+  font-size:20px;
+  font-weight:800;
+  margin-top:9px;
+}
+
+/* =========================
+   HORAS
+========================= */
+
+.hf{
+  display:flex;
+  gap:9px;
+  flex-wrap:wrap;
+  align-items:flex-end;
+  margin-bottom:14px;
+}
+
+.hf label{
+  margin:0;
+  text-align:left;
+  font-weight:600;
+  font-size:13px;
+  color:var(--mute);
+}
+
+.hf input{
+  display:block;
+  margin-top:5px;
+  padding:9px;
+  border:1px solid var(--line);
+  border-radius:9px;
+  background:var(--card);
+}
+
+/* =========================
+   MAPA DOS SONHOS / PLANEJAMENTO
+========================= */
+.top-actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+.dream-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.dream{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.05)}
+.dream img{width:100%;height:155px;object-fit:cover;background:var(--col);display:block}
+.dream-body{padding:14px}
+.dream h3{margin:0 0 5px;font-size:17px}
+.dream .goal{font-size:13px;color:var(--mute);margin:0 0 10px}
+.progress{height:9px;background:var(--col);border-radius:99px;overflow:hidden}
+.progress i{display:block;height:100%;background:var(--acc);border-radius:99px}
+.dream-meta{display:flex;justify-content:space-between;gap:8px;margin-top:8px;font-size:12px;color:var(--mute)}
+.next-action{margin-top:10px;padding:9px 10px;border-radius:10px;background:var(--acc-light);font-size:13px}
+.plan-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.plan-head h2{margin:0}
+.calendar-box{margin:0 0 14px;padding:13px;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+.calendar-box form{display:flex;gap:8px;flex-wrap:wrap}
+.calendar-box input{flex:1;min-width:220px}
+.five{font-size:12px;padding:5px 8px}
+@media(max-width:720px){.top-actions{width:100%;justify-content:stretch}.top-actions .btn{flex:1}.dream-grid{grid-template-columns:1fr}}
+
+/* =========================
+   DIÁLOGOS
+========================= */
+
+dialog{
+  border:0;
+  border-radius:16px;
+  padding:22px;
+  width:min(440px,calc(100% - 24px));
+  background:var(--card);
+  color:var(--ink);
+  box-shadow:
+    0 20px 70px rgba(0,0,0,.35);
+}
+
+dialog::backdrop{
+  background:rgba(5,7,10,.62);
+  backdrop-filter:blur(4px);
+}
+
+dialog h3{
+  margin:0 0 7px;
+  font-size:19px;
+  font-weight:800;
+}
+
+.f input,
+.f select,
+.f textarea,
+#bk{
+  width:100%;
+  background:var(--bg);
+  border:1px solid var(--line);
+  border-radius:9px;
+  padding:9px 11px;
+}
+
+textarea{
+  resize:vertical;
+  min-height:70px;
+}
+
+.row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.acts{
+  display:flex;
+  gap:8px;
+  justify-content:flex-end;
+  margin-top:19px;
+}
+
+#bk{
+  min-height:200px;
+  font:12px/1.4 ui-monospace,Menlo,monospace;
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+@media(max-width:760px){
+
+  .top{
+    position:relative;
+    padding:16px;
+  }
+
+  h1{
+    width:100%;
+    margin-bottom:2px;
+  }
+
+  .tabs{
+    width:100%;
+    overflow-x:auto;
+    flex-wrap:nowrap;
+    padding-bottom:2px;
+  }
+
+  .tab{
+    flex:0 0 auto;
+  }
+
+  #bkbtn{
+    position:absolute;
+    right:16px;
+    top:14px;
+  }
+
+  .tools{
+    padding:10px 16px 5px;
+  }
+
+  .search{
+    width:100%;
+  }
+
+  #view{
+    padding:10px 16px 28px;
+  }
+
+  .foco{
+    padding:17px;
+  }
+
+  .clock{
+    font-size:68px;
+  }
+}
+
+@media(max-width:520px){
+
+  .col{
+    flex-basis:84vw;
+  }
+
+  .search{
+    width:100%;
+  }
+
+  .clock{
+    font-size:60px;
+  }
+
+  .row3{
+    grid-template-columns:1fr;
+  }
+
+  .row{
+    grid-template-columns:1fr;
+  }
+
+  .acts{
+    flex-wrap:wrap;
+  }
+
+  .acts .btn{
+    flex:1;
+  }
+
+  #f-del,
+  #k-del{
+    flex-basis:100%;
+    margin-right:0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header class="top">
+
+  <h1>Central</h1>
+
+  <nav class="tabs" id="tabs" aria-label="Ferramentas">
+    <button class="tab" data-t="tarefas">Tarefas</button>
+    <button class="tab" data-t="quadro">Quadro</button>
+    <button class="tab" data-t="foco">Foco</button>
+    <button class="tab" data-t="habitos">Hábitos</button>
+    <button class="tab" data-t="semana">Planejamento</button>
+    <button class="tab" data-t="sonhos">Mapa dos Sonhos</button>
+  </nav>
+
+  <div class="top-actions">
+    <button class="btn" id="themeBtn" type="button">Tema</button>
+    <button class="btn" id="calendarBtn" type="button">Google Calendar</button>
+    <button class="btn" id="bkbtn" type="button">Backup</button>
+  </div>
+
+</header>
+
+<div class="tools" id="tools">
+
+  <input
+    class="search"
+    id="q"
+    type="search"
+    placeholder="Buscar"
+    aria-label="Buscar">
+
+  <div class="chips" id="chips">
+    <button class="chip" data-f="" aria-pressed="true">Todos</button>
+    <button class="chip" data-f="trabalho" aria-pressed="false">Trabalho</button>
+    <button class="chip" data-f="estudos" aria-pressed="false">Estudos</button>
+    <button class="chip" data-f="pessoal" aria-pressed="false">Pessoal</button>
+  </div>
+
+</div>
+
+<main id="view"></main>
+
+<!-- =========================
+     DIALOG CARTÃO
+========================= -->
+
+<dialog id="dlg">
+
+<form id="f" class="f">
+
+  <h3 id="dt">Novo cartão</h3>
+
+  <label for="f-title">Título</label>
+  <input id="f-title" required maxlength="120">
+
+  <label for="f-desc">Descrição</label>
+  <textarea id="f-desc" maxlength="500"></textarea>
+
+  <label for="f-next">Próxima ação</label>
+  <input id="f-next" maxlength="160" placeholder="Qual é o próximo passo?">
+
+  <div class="row">
+
+    <div>
+      <label for="f-tag">Área</label>
+      <select id="f-tag">
+        <option value="trabalho">Trabalho</option>
+        <option value="estudos">Estudos</option>
+        <option value="pessoal">Pessoal</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="f-prio">Prioridade</label>
+      <select id="f-prio">
+        <option value="baixa">Baixa</option>
+        <option value="media">Média</option>
+        <option value="alta">Alta</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="f-due">Prazo</label>
+      <input id="f-due" type="date">
+    </div>
+
+    <div>
+      <label for="f-col">Coluna</label>
+      <select id="f-col"></select>
+    </div>
+
+  </div>
+
+  <div class="acts">
+
+    <button
+      type="button"
+      class="btn del"
+      id="f-del">
+      Excluir
+    </button>
+
+    <button
+      type="button"
+      class="btn"
+      data-close="dlg">
+      Cancelar
+    </button>
+
+    <button class="btn pri">
+      Salvar cartão
+    </button>
+
+  </div>
+
+</form>
+
+</dialog>
+
+<!-- =========================
+     DIALOG BLOCO
+========================= -->
+
+<dialog id="kdlg">
+
+<form id="kf" class="f">
+
+  <h3 id="kt">Novo bloco</h3>
+
+  <label for="k-t">O que vai fazer</label>
+  <input id="k-t" required maxlength="80">
+
+  <div class="row">
+
+    <div>
+      <label for="k-s">Início</label>
+      <input
+        id="k-s"
+        type="time"
+        required
+        value="09:00">
+    </div>
+
+    <div>
+      <label for="k-e">Fim</label>
+      <input
+        id="k-e"
+        type="time"
+        required
+        value="10:00">
+    </div>
+
+  </div>
+
+  <label for="k-d">Dia da semana</label>
+  <select id="k-d"></select>
+
+  <div class="acts">
+
+    <button
+      type="button"
+      class="btn del"
+      id="k-del">
+      Excluir
+    </button>
+
+    <button
+      type="button"
+      class="btn"
+      data-close="kdlg">
+      Cancelar
+    </button>
+
+    <button class="btn pri">
+      Salvar bloco
+    </button>
+
+  </div>
+
+</form>
+
+</dialog>
+
+<!-- =========================
+     DIALOG MAPA DOS SONHOS
+========================= -->
+<dialog id="sdlg">
+<form id="sf" class="f">
+  <h3 id="st">Novo sonho</h3>
+  <label for="s-title">Sonho / objetivo</label>
+  <input id="s-title" required maxlength="120">
+  <label for="s-goal">Objetivo detalhado</label>
+  <textarea id="s-goal" maxlength="500"></textarea>
+  <label for="s-photo">Foto</label>
+  <input id="s-photo" type="file" accept="image/*">
+  <label for="s-due">Prazo</label>
+  <input id="s-due" type="date">
+  <label for="s-progress">Progresso: <span id="s-pv">0%</span></label>
+  <input id="s-progress" type="range" min="0" max="100" value="0">
+  <label for="s-next">Próxima ação</label>
+  <input id="s-next" maxlength="160" placeholder="Qual é o próximo passo?">
+  <div class="acts">
+    <button type="button" class="btn del" id="s-del">Excluir</button>
+    <button type="button" class="btn" data-close="sdlg">Cancelar</button>
+    <button class="btn pri">Salvar sonho</button>
+  </div>
+</form>
+</dialog>
+
+<!-- =========================
+     BACKUP
+========================= -->
+
+<dialog id="bdlg">
+
+  <h3>Backup</h3>
+
+  <p class="note">
+    Copie este texto e guarde onde quiser.
+    Para restaurar, cole um backup aqui e use Restaurar tudo.
+  </p>
+
+  <textarea
+    id="bk"
+    spellcheck="false"></textarea>
+
+  <p
+    class="note"
+    id="bkmsg"
+    role="status"></p>
+
+  <div class="acts">
+
+    <button
+      class="btn"
+      data-close="bdlg">
+      Fechar
+    </button>
+
+    <button
+      class="btn"
+      id="bk-copy">
+      Copiar texto
+    </button>
+
+    <button
+      class="btn pri"
+      id="bk-load">
+      Restaurar tudo
+    </button>
+
+  </div>
+
+</dialog>
+
+<script>
+
+const KEY='central-v1';
+
+const TAGS={
+  trabalho:'Trabalho',
+  estudos:'Estudos',
+  pessoal:'Pessoal'
+};
+
+const PR={
+  alta:'Alta',
+  media:'Média',
+  baixa:'Baixa'
+};
+
+const DAYS=[
+  'Seg',
+  'Ter',
+  'Qua',
+  'Qui',
+  'Sex',
+  'Sáb',
+  'Dom'
+];
+
+const $=id=>document.getElementById(id);
+
+const uid=()=>Math.random()
+  .toString(36)
+  .slice(2,9);
+
+const esc=s=>String(s??'')
+  .replace(/[&<>"]/g,c=>({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;'
+  }[c]));
+
+const ymd=d=>
+  d.getFullYear()+
+  '-'+
+  String(d.getMonth()+1).padStart(2,'0')+
+  '-'+
+  String(d.getDate()).padStart(2,'0');
+
+function weekDates(){
+
+  const t=new Date();
+
+  const s=new Date(
+    t.getFullYear(),
+    t.getMonth(),
+    t.getDate()-((t.getDay()+6)%7)
+  );
+
+  return [...Array(7)].map(
+    (_,i)=>new Date(
+      s.getFullYear(),
+      s.getMonth(),
+      s.getDate()+i
+    )
+  );
+}
+
+function def(){
+
+  return{
+
+    cols:[
+      {
+        id:'c1',
+        name:'A fazer'
+      },
+      {
+        id:'c2',
+        name:'Em andamento'
+      },
+      {
+        id:'c3',
+        name:'Concluído'
+      }
+    ],
+
+    cards:[
+
+      {
+        id:uid(),
+        col:'c1',
+        title:'Planejar a semana',
+        desc:'',
+        tag:'trabalho',
+        prio:'alta',
+        due:'',
+        pomos:0,
+        next:''
+      },
+
+      {
+        id:uid(),
+        col:'c1',
+        title:'Revisar o capítulo 3',
+        desc:'',
+        tag:'estudos',
+        prio:'media',
+        due:'',
+        pomos:0
+      }
+
+    ],
+
+    habits:[
+      {
+        id:uid(),
+        name:'Beber água',
+        d:{}
+      }
+    ],
+
+    blocks:[],
+    dreams:[],
+    calendar:'',
+    theme:'auto',
+
+    pomo:{
+      w:25,
+      s:5,
+      l:15,
+      log:{}
+    }
+
+  };
+
+}
+
+function load(){
+
+  try{
+
+    const o=JSON.parse(
+      localStorage.getItem(KEY)
+    );
+
+    if(
+      o &&
+      Array.isArray(o.cols) &&
+      o.cols.length &&
+      Array.isArray(o.cards)
+    ){
+
+      return Object.assign(def(),o);
+
+    }
+
+  }catch(e){}
+
+  return def();
+
+}
+
+function save(){
+
+  try{
+    localStorage.setItem(
+      KEY,
+      JSON.stringify(S)
+    );
+  }catch(e){}
+
+}
+
+let S=load();
+
+let tab='tarefas';
+let filter='';
+let q='';
+let drag=null;
+let editing=null;
+let editingB=null;
+let editingDream=null;
+
+const done=x=>
+  x.col===S.cols[S.cols.length-1].id;
+
+const vis=x=>
+  (!filter||x.tag===filter)&&
+  (!q||(x.title+' '+(x.desc||''))
+    .toLowerCase()
+    .includes(q));
+
+function dueInfo(x){
+
+  if(!x.due)return'';
+
+  const t=new Date();
+
+  const td=new Date(
+    t.getFullYear(),
+    t.getMonth(),
+    t.getDate()
+  );
+
+  const diff=Math.round(
+    (new Date(x.due+'T00:00')-td)/864e5
+  );
+
+  const s=
+    x.due.slice(8,10)+
+    '/'+
+    x.due.slice(5,7);
+
+  if(done(x))
+    return `<span class="due">${s}</span>`;
+
+  const [txt,c]=
+    diff<0
+      ?['Atrasado, '+s,'late']
+      :diff===0
+        ?['Hoje','soon']
+        :diff===1
+          ?['Amanhã','soon']
+          :[s,diff<=2?'soon':''];
+
+  return `<span class="due ${c}">${txt}</span>`;
+
+}
+
+const meta=x=>
+  `<span class="meta">
+    <span class="tag ${TAGS[x.tag]?x.tag:'pessoal'}">
+      ${TAGS[x.tag]||'Pessoal'}
+    </span>
+    ${dueInfo(x)}
+    <span class="pr">
+      ${PR[x.prio]||'Baixa'}
+    </span>
+  </span>`;
+
+/* =========================
+   TAREFAS
+========================= */
+
+function vTasks(){
+
+  const l=S.cards
+    .filter(vis)
+    .sort((a,b)=>done(a)-done(b));
+
+  return `
+
+    <form class="qa" id="qa">
+
+      <input
+        id="qa-t"
+        placeholder="Nova tarefa"
+        required
+        maxlength="120"
+        aria-label="Nova tarefa">
+
+      <button class="btn pri">
+        Adicionar tarefa
+      </button>
+
+    </form>
+
+    <ul class="tl">
+
+      ${
+        l.map(x=>`
+
+          <li
+            class="card p-${x.prio}"
+            data-id="${esc(x.id)}">
+
+            <input
+              type="checkbox"
+              data-chk="${esc(x.id)}"
+              ${done(x)?'checked':''}
+              aria-label="Concluir ${esc(x.title)}">
+
+            <span class="t ${done(x)?'dn':''}">
+              ${esc(x.title)}
+            </span>
+
+            ${meta(x)}
+            ${x.next?`<div class="next-action"><b>Próxima ação:</b> ${esc(x.next)}</div>`:''}
+            ${!done(x)?`<button type="button" class="btn five" data-five="${esc(x.id)}">Começar por 5 min</button>`:''}
+
+          </li>
+
+        `).join('')
+
+        ||
+
+        '<p class="empty">Nenhuma tarefa por aqui. Adicione a primeira acima.</p>'
+      }
+
+    </ul>
+
+  `;
+
+}
+
+/* =========================
+   QUADRO
+========================= */
+
+function vBoard(){
+
+  return `
+    <div class="board">
+
+      ${
+        S.cols.map(c=>{
+
+          const cs=S.cards.filter(
+            x=>x.col===c.id&&vis(x)
+          );
+
+          return `
+
+            <section
+              class="col"
+              data-id="${esc(c.id)}">
+
+              <header>
+
+                <h2
+                  contenteditable="true"
+                  spellcheck="false"
+                  data-rename="${esc(c.id)}"
+                  aria-label="Nome da coluna">
+
+                  ${esc(c.name)}
+
+                </h2>
+
+                <span class="n">
+                  ${cs.length}
+                </span>
+
+                <button
+                  class="ico"
+                  data-del="col:${esc(c.id)}">
+
+                  Excluir
+
+                </button>
+
+              </header>
+
+              <div class="list">
+
+                ${
+                  cs.map(x=>`
+
+                    <article
+                      class="card p-${x.prio}"
+                      draggable="true"
+                      data-id="${esc(x.id)}"
+                      tabindex="0">
+
+                      <div class="t ${done(x)?'dn':''}">
+                        ${esc(x.title)}
+                      </div>
+
+                      ${
+                        x.desc
+                          ?`<p>${esc(x.desc)}</p>`
+                          :''
+                      }
+
+                      ${meta(x)}
+                      ${x.next?`<div class="next-action"><b>Próxima ação:</b> ${esc(x.next)}</div>`:''}
+
+                    </article>
+
+                  `).join('')
+
+                  ||
+
+                  '<p class="empty">Nenhum cartão aqui</p>'
+                }
+
+              </div>
+
+              <button
+                class="add"
+                data-add="${esc(c.id)}">
+
+                + Adicionar cartão
+
+              </button>
+
+            </section>
+
+          `;
+
+        }).join('')
+
+      }
+
+      <button
+        class="newcol"
+        id="newcol">
+
+        + Nova coluna
+
+      </button>
+
+    </div>
+  `;
+
+}
+
+/* =========================
+   POMODORO
+========================= */
+
+const P={
+  mode:'w',
+  left:S.pomo.w*60,
+  run:false,
+  end:0,
+  task:'',
+  cycle:0
+};
+
+const MN={
+  w:'Foco',
+  s:'Pausa curta',
+  l:'Pausa longa'
+};
+
+function vFocus(){
+
+  const open=S.cards.filter(
+    x=>!done(x)
+  );
+
+  return `
+
+    <div class="foco">
+
+      <div class="c">
+
+        ${
+          Object.keys(MN).map(k=>`
+
+            <button
+              class="chip"
+              data-mode="${k}"
+              aria-pressed="${P.mode===k}">
+
+              ${MN[k]}
+
+            </button>
+
+          `).join('')
+        }
+
+      </div>
+
+      <div
+        class="clock"
+        id="clock"
+        role="timer">
+
+        00:00
+
+      </div>
+
+      <div class="c">
+
+        <button
+          class="btn pri"
+          id="pgo">
+
+          Iniciar
+
+        </button>
+
+        <button
+          class="btn"
+          id="prs">
+
+          Reiniciar
+
+        </button>
+
+      </div>
+
+      <label for="ptask">
+        Tarefa do ciclo
+      </label>
+
+      <select id="ptask">
+
+        <option value="">
+          Sem tarefa
+        </option>
+
+        ${
+          open.map(x=>`
+
+            <option
+              value="${esc(x.id)}"
+              ${P.task===x.id?'selected':''}>
+
+              ${esc(x.title)}
+              (${x.pomos||0} ciclos)
+
+            </option>
+
+          `).join('')
+        }
+
+      </select>
+
+      <p
+        class="note"
+        id="pinfo">
+      </p>
+
+      <div class="row3">
+
+        ${
+          Object.keys(MN).map(k=>`
+
+            <div>
+
+              <label for="cf-${k}">
+                ${MN[k]} (min)
+              </label>
+
+              <input
+                id="cf-${k}"
+                type="number"
+                min="1"
+                max="120"
+                data-cfg="${k}"
+                value="${S.pomo[k]}">
+
+            </div>
+
+          `).join('')
+        }
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+function beep(){
+
+  try{
+
+    const a=
+      new(window.AudioContext||
+      window.webkitAudioContext)();
+
+    const o=a.createOscillator();
+    const g=a.createGain();
+
+    o.connect(g);
+    g.connect(a.destination);
+
+    g.gain.value=.15;
+    o.frequency.value=660;
+
+    o.start();
+    o.stop(a.currentTime+.6);
+
+  }catch(e){}
+
+}
+
+function finish(){
+
+  beep();
+
+  P.run=false;
+
+  if(P.mode==='w'){
+
+    const k=ymd(new Date());
+
+    S.pomo.log[k]=
+      (S.pomo.log[k]||0)+1;
+
+    const x=S.cards.find(
+      c=>c.id===P.task
+    );
+
+    if(x)
+      x.pomos=(x.pomos||0)+1;
+
+    P.cycle++;
+
+    P.mode=
+      P.cycle%4===0
+        ?'l'
+        :'s';
+
+  }else{
+
+    P.mode='w';
+
+  }
+
+  P.left=
+    S.pomo[P.mode]*60;
+
+  save();
+
+  if(tab==='foco')
+    render();
+
+}
+
+function tick(){
+
+  if(P.run){
+
+    P.left=Math.max(
+      0,
+      Math.round(
+        (P.end-Date.now())/1000
+      )
+    );
+
+    if(!P.left)
+      return finish();
+
+  }
+
+  const c=$('clock');
+
+  if(!c){
+
+    document.title=
+      'Central de Produtividade';
+
+    return;
+
+  }
+
+  const t=
+    String(
+      Math.floor(P.left/60)
+    ).padStart(2,'0')+
+    ':'+
+    String(
+      P.left%60
+    ).padStart(2,'0');
+
+  c.textContent=t;
+
+  $('pgo').textContent=
+    P.run
+      ?'Pausar'
+      :'Iniciar';
+
+  $('pinfo').textContent=
+    MN[P.mode]+
+    (
+      P.mode==='w'
+        ?` ${P.cycle%4+1} de 4. `
+        :'. '
+    )+
+    'Hoje: '+
+    (S.pomo.log[ymd(new Date())]||0)+
+    ' ciclos de foco.';
+
+  document.title=
+    P.run
+      ?t+' '+MN[P.mode]
+      :'Central de Produtividade';
+
+}
+
+setInterval(tick,500);
+
+/* =========================
+   HÁBITOS
+========================= */
+
+function streak(h){
+
+  const d=new Date();
+
+  if(!h.d[ymd(d)])
+    d.setDate(d.getDate()-1);
+
+  let n=0;
+
+  while(h.d[ymd(d)]){
+
+    n++;
+
+    d.setDate(
+      d.getDate()-1
+    );
+
+  }
+
+  return n;
+
+}
+
+function vHabits(){
+
+  const wd=weekDates();
+  const t=ymd(new Date());
+  const m=t.slice(0,7);
+
+  return `
+
+    <form
+      class="qa"
+      id="ha">
+
+      <input
+        id="ha-n"
+        placeholder="Novo hábito"
+        required
+        maxlength="60"
+        aria-label="Novo hábito">
+
+      <button class="btn pri">
+        Adicionar hábito
+      </button>
+
+    </form>
+
+    ${
+      S.habits.length
+
+      ?
+
+      `<div class="scroll">
+
+        <table class="tb">
+
+          <thead>
+
+            <tr>
+
+              <th>Hábito</th>
+
+              ${
+                wd.map((d,i)=>`
+
+                  <th
+                    class="${ymd(d)===t?'now':''}">
+
+                    ${DAYS[i]}
+                    <br>
+                    ${d.getDate()}
+
+                  </th>
+
+                `).join('')
+              }
+
+              <th>Sequência</th>
+              <th>No mês</th>
+              <th></th>
+
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            ${
+              S.habits.map(h=>`
+
+                <tr>
+
+                  <td>
+                    ${esc(h.name)}
+                  </td>
+
+                  ${
+                    wd.map(d=>{
+
+                      const k=ymd(d);
+
+                      return `
+
+                        <td>
+
+                          <input
+                            type="checkbox"
+                            data-hab="${esc(h.id)}"
+                            data-day="${k}"
+                            ${h.d[k]?'checked':''}
+                            aria-label="${esc(h.name)}, ${k}">
+
+                        </td>
+
+                      `;
+
+                    }).join('')
+                  }
+
+                  <td>
+                    ${streak(h)} dias
+                  </td>
+
+                  <td>
+                    ${
+                      Object.keys(h.d)
+                        .filter(
+                          k=>k.startsWith(m)&&h.d[k]
+                        ).length
+                    } dias
+                  </td>
+
+                  <td>
+
+                    <button
+                      class="ico"
+                      data-del="hab:${esc(h.id)}">
+
+                      Excluir
+
+                    </button>
+
+                  </td>
+
+                </tr>
+
+              `).join('')
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>`
+
+      :
+
+      '<p class="empty">Cadastre um hábito para acompanhar a semana.</p>'
+    }
+
+  `;
+
+}
+
+/* =========================
+   SEMANA
+========================= */
+
+function vWeek(){
+
+  const wd=weekDates();
+  const t=ymd(new Date());
+
+  return `
+
+    <div class="calendar-box">
+      <b>Google Calendar</b>
+      <p class="note">Guarde seu link do Google Calendar para abrir rapidamente.</p>
+      <form id="calendarForm">
+        <input id="calendarLink" type="url" placeholder="https://calendar.google.com/" value="${esc(S.calendar||'')}">
+        <button class="btn pri">Salvar link</button>
+        ${S.calendar?`<button type="button" class="btn" id="openCalendar">Abrir calendário</button>`:''}
+      </form>
+    </div>
+
+
+    <div class="scroll">
+
+      <div class="wk">
+
+        ${
+          wd.map((d,i)=>{
+
+            const k=ymd(d);
+
+            const bl=S.blocks
+              .filter(b=>b.day===i)
+              .sort(
+                (a,b)=>
+                  a.start.localeCompare(b.start)
+              );
+
+            return `
+
+              <section
+                class="day ${k===t?'now':''}">
+
+                <h3>
+
+                  ${DAYS[i]}
+
+                  <small>
+                    ${d.getDate()}/${d.getMonth()+1}
+                  </small>
+
+                </h3>
+
+                ${
+                  S.cards
+                    .filter(
+                      x=>x.due===k&&!done(x)
+                    )
+                    .map(x=>`
+
+                      <div
+                        class="blk tk"
+                        data-id="${esc(x.id)}">
+
+                        Prazo:
+                        ${esc(x.title)}
+
+                      </div>
+
+                    `).join('')
+                }
+
+                ${
+                  bl.map(b=>`
+
+                    <div
+                      class="blk"
+                      data-blk="${esc(b.id)}">
+
+                      <b>
+                        ${b.start} às ${b.end}
+                      </b>
+
+                      ${esc(b.title)}
+
+                    </div>
+
+                  `).join('')
+                }
+
+                <button
+                  class="add"
+                  data-addblk="${i}">
+
+                  + Adicionar bloco
+
+                </button>
+
+              </section>
+
+            `;
+
+          }).join('')
+        }
+
+      </div>
+
+    </div>
+
+    <p class="note">
+      Os blocos se repetem toda semana.
+      Tarefas com prazo aparecem no dia certo.
+    </p>
+
+  `;
+
+}
+
+/* =========================
+   MAPA DOS SONHOS
+========================= */
+function vDreams(){
+  return `
+    <div class="plan-head">
+      <div><h2>Mapa dos Sonhos</h2><p class="note">Transforme cada sonho em objetivo, prazo, progresso e próxima ação.</p></div>
+      <button class="btn pri" id="newDream">+ Novo sonho</button>
+    </div>
+    <div class="dream-grid">
+      ${S.dreams.map(x=>`
+        <article class="dream" data-dream="${esc(x.id)}">
+          ${x.photo?`<img src="${x.photo}" alt="${esc(x.title)}">`:''}
+          <div class="dream-body">
+            <h3>${esc(x.title)}</h3>
+            ${x.goal?`<p class="goal">${esc(x.goal)}</p>`:''}
+            <div class="progress"><i style="width:${Math.max(0,Math.min(100,+x.progress||0))}%"></i></div>
+            <div class="dream-meta"><span>${+x.progress||0}% concluído</span><span>${x.due?x.due.split('-').reverse().join('/'):'Sem prazo'}</span></div>
+            <div class="next-action">${x.next?`<b>Próxima ação:</b> ${esc(x.next)}`:'Defina a próxima ação.'}</div>
+          </div>
+        </article>`).join('') || '<p class="empty">Adicione seu primeiro sonho.</p>'}
+    </div>
+  `;
+}
+
+/* =========================
+   RENDER
+========================= */
+
+function render(){
+
+  document
+    .querySelectorAll('.tab')
+    .forEach(b=>
+      b.setAttribute(
+        'aria-selected',
+        b.dataset.t===tab
+      )
+    );
+
+  $('tools').hidden=
+    !(tab==='tarefas'||tab==='quadro');
+
+  $('view').innerHTML=
+    ({
+      tarefas:vTasks,
+      quadro:vBoard,
+      foco:vFocus,
+      habitos:vHabits,
+      semana:vWeek,
+      sonhos:vDreams
+    })[tab]();
+
+  tick();
+
+}
+
+/* =========================
+   DIÁLOGOS
+========================= */
+
+document.addEventListener(
+  'click',
+  e=>{
+
+    const d=
+      e.target.dataset&&
+      e.target.dataset.close;
+
+    if(d)
+      $(d).close();
+
+  }
+);
+
+function openCard(id,colId){
+
+  editing=id;
+
+  const x=
+    id
+      ?S.cards.find(c=>c.id===id)
+      :null;
+
+  $('dt').textContent=
+    x
+      ?'Editar cartão'
+      :'Novo cartão';
+
+  $('f-col').innerHTML=
+    S.cols.map(c=>
+      `<option value="${esc(c.id)}">
+        ${esc(c.name)}
+      </option>`
+    ).join('');
+
+  $('f-title').value=
+    x
+      ?x.title
+      :'';
+
+  $('f-desc').value=
+    x
+      ?x.desc||''
+      :'';
+
+  $('f-next').value=x?x.next||'':'';
+
+  $('f-tag').value=
+    x&&TAGS[x.tag]
+      ?x.tag
+      :(filter||'trabalho');
+
+  $('f-prio').value=
+    x&&PR[x.prio]
+      ?x.prio
+      :'media';
+
+  $('f-due').value=
+    x
+      ?x.due||''
+      :'';
+
+  $('f-col').value=
+    x
+      ?x.col
+      :colId;
+
+  $('f-del').hidden=!x;
+
+  $('dlg').showModal();
+
+  $('f-title').focus();
+
+}
+
+$('f').addEventListener(
+  'submit',
+  e=>{
+
+    e.preventDefault();
+
+    const v={
+      title:$('f-title').value.trim(),
+      desc:$('f-desc').value.trim(),
+      next:$('f-next').value.trim(),
+      tag:$('f-tag').value,
+      prio:$('f-prio').value,
+      due:$('f-due').value,
+      col:$('f-col').value
+    };
+
+    if(!v.title)
+      return;
+
+    if(editing){
+
+      const x=
+        S.cards.find(
+          c=>c.id===editing
+        );
+
+      if(x.col!==v.col){
+
+        S.cards=
+          S.cards.filter(
+            c=>c!==x
+          );
+
+        Object.assign(x,v);
+
+        S.cards.push(x);
+
+      }else{
+
+        Object.assign(x,v);
+
+      }
+
+    }else{
+
+      S.cards.push({
+        id:uid(),
+        pomos:0,
+        ...v
+      });
+
+    }
+
+    save();
+    render();
+
+    $('dlg').close();
+
+  }
+);
+
+$('f-del').onclick=()=>{
+
+  S.cards=
+    S.cards.filter(
+      c=>c.id!==editing
+    );
+
+  save();
+  render();
+  $('dlg').close();
+
+};
+
+function openBlk(id,day){
+
+  editingB=id;
+
+  const b=
+    id
+      ?S.blocks.find(x=>x.id===id)
+      :null;
+
+  $('kt').textContent=
+    b
+      ?'Editar bloco'
+      :'Novo bloco';
+
+  $('k-d').innerHTML=
+    DAYS.map(
+      (n,i)=>
+        `<option value="${i}">
+          ${n}
+        </option>`
+    ).join('');
+
+  $('k-t').value=
+    b
+      ?b.title
+      :'';
+
+  $('k-s').value=
+    b
+      ?b.start
+      :'09:00';
+
+  $('k-e').value=
+    b
+      ?b.end
+      :'10:00';
+
+  $('k-d').value=
+    b
+      ?b.day
+      :day;
+
+  $('k-del').hidden=!b;
+
+  $('kdlg').showModal();
+
+  $('k-t').focus();
+
+}
+
+$('kf').addEventListener(
+  'submit',
+  e=>{
+
+    e.preventDefault();
+
+    const v={
+      title:$('k-t').value.trim(),
+      start:$('k-s').value,
+      end:$('k-e').value,
+      day:+$('k-d').value
+    };
+
+    if(editingB){
+
+      Object.assign(
+        S.blocks.find(
+          b=>b.id===editingB
+        ),
+        v
+      );
+
+    }else{
+
+      S.blocks.push({
+        id:uid(),
+        ...v
+      });
+
+    }
+
+    save();
+    render();
+    $('kdlg').close();
+
+  }
+);
+
+$('k-del').onclick=()=>{
+
+  S.blocks=
+    S.blocks.filter(
+      b=>b.id!==editingB
+    );
+
+  save();
+  render();
+  $('kdlg').close();
+
+};
+
+/* =========================
+   EVENTOS PRINCIPAIS
+========================= */
+
+const view=$('view');
+
+view.addEventListener(
+  'submit',
+  e=>{
+
+    e.preventDefault();
+
+    const id=e.target.id;
+
+    if(id==='qa'){
+
+      const t=
+        $('qa-t').value.trim();
+
+      if(t){
+
+        S.cards.push({
+          id:uid(),
+          col:S.cols[0].id,
+          title:t,
+          desc:'',
+          tag:filter||'pessoal',
+          prio:'media',
+          due:'',
+          pomos:0,
+          next:''
+        });
+
+      }
+
+    }
+
+    if(id==='ha'){
+
+      const n=
+        $('ha-n').value.trim();
+
+      if(n){
+
+        S.habits.push({
+          id:uid(),
+          name:n,
+          d:{}
+        });
+
+      }
+
+    }
+
+    save();
+    render();
+
+  }
+);
+
+view.addEventListener(
+  'click',
+  e=>{
+
+    const t=e.target;
+    const ds=t.dataset;
+
+    if(ds.del){
+
+      if(!ds.sure){
+
+        ds.sure='1';
+
+        const old=t.textContent;
+
+        t.textContent=
+          'Confirmar exclusão';
+
+        setTimeout(
+          ()=>{
+            if(t.isConnected){
+
+              delete ds.sure;
+              t.textContent=old;
+
+            }
+          },
+          3000
+        );
+
+        return;
+
+      }
+
+      const[k,id]=
+        ds.del.split(':');
+
+      if(k==='col'){
+
+        if(S.cols.length<2)
+          return;
+
+        S.cols=
+          S.cols.filter(
+            c=>c.id!==id
+          );
+
+        S.cards=
+          S.cards.filter(
+            c=>c.col!==id
+          );
+
+      }
+
+      if(k==='hab'){
+
+        S.habits=
+          S.habits.filter(
+            h=>h.id!==id
+          );
+
+      }
+
+      save();
+
+      return render();
+
+    }
+
+    if(ds.add)
+      return openCard(null,ds.add);
+
+    if(ds.addblk)
+      return openBlk(null,+ds.addblk);
+
+    if(t.id==='newcol'){
+
+      const id=uid();
+
+      S.cols.push({
+        id,
+        name:'Nova coluna'
+      });
+
+      save();
+      render();
+
+      const h=
+        view.querySelector(
+          `[data-rename="${id}"]`
+        );
+
+      if(h)
+        h.focus();
+
+      return;
+
+    }
+
+    if(ds.mode){
+
+      P.mode=ds.mode;
+      P.run=false;
+      P.left=
+        S.pomo[P.mode]*60;
+
+      return render();
+
+    }
+
+    if(ds.five){
+      const x=S.cards.find(c=>c.id===ds.five);
+      if(x){ P.mode='w'; P.task=x.id; P.left=300; P.end=Date.now()+300000; P.run=true; tab='foco'; return render(); }
+    }
+
+    if(t.id==='pgo'){
+
+      if(P.run){
+
+        P.left=Math.max(
+          0,
+          Math.round(
+            (P.end-Date.now())/1000
+          )
+        );
+
+        P.run=false;
+
+      }else{
+
+        P.end=
+          Date.now()+
+          P.left*1000;
+
+        P.run=true;
+
+      }
+
+      return tick();
+
+    }
+
+    if(t.id==='prs'){
+
+      P.run=false;
+      P.left=
+        S.pomo[P.mode]*60;
+
+      return tick();
+
+    }
+
+    if(t.type==='checkbox')
+      return;
+
+    const b=
+      t.closest(
+        '.blk[data-blk]'
+      );
+
+    if(b)
+      return openBlk(
+        b.dataset.blk
+      );
+
+    const c=
+      t.closest('[data-id]');
+
+    if(
+      c &&
+      (
+        c.classList.contains('card')||
+        c.classList.contains('tk')
+      )
+    ){
+
+      return openCard(
+        c.dataset.id
+      );
+
+    }
+
+  }
+);
+
+view.addEventListener(
+  'change',
+  e=>{
+
+    const t=e.target;
+    const ds=t.dataset;
+
+    if(ds.chk){
+
+      const x=
+        S.cards.find(
+          c=>c.id===ds.chk
+        );
+
+      x.col=
+        t.checked
+          ?S.cols[S.cols.length-1].id
+          :S.cols[0].id;
+
+      save();
+      render();
+
+    }else if(ds.hab){
+
+      const h=
+        S.habits.find(
+          x=>x.id===ds.hab
+        );
+
+      if(t.checked)
+        h.d[ds.day]=1;
+      else
+        delete h.d[ds.day];
+
+      save();
+      render();
+
+    }else if(t.id==='ptask'){
+
+      P.task=t.value;
+
+    }else if(ds.cfg){
+
+      const v=
+        Math.min(
+          120,
+          Math.max(
+            1,
+            +t.value||1
+          )
+        );
+
+      S.pomo[ds.cfg]=v;
+
+      if(
+        !P.run &&
+        P.mode===ds.cfg
+      ){
+
+        P.left=v*60;
+
+      }
+
+      save();
+      tick();
+
+    }
+
+  }
+);
+
+view.addEventListener(
+  'keydown',
+  e=>{
+
+    if(
+      e.target.matches(
+        'h2[data-rename]'
+      ) &&
+      e.key==='Enter'
+    ){
+
+      e.preventDefault();
+      e.target.blur();
+
+    }else if(
+      e.target.matches(
+        'article.card'
+      ) &&
+      e.key==='Enter'
+    ){
+
+      openCard(
+        e.target.dataset.id
+      );
+
+    }
+
+  }
+);
+
+view.addEventListener(
+  'focusout',
+  e=>{
+
+    const id=
+      e.target.dataset&&
+      e.target.dataset.rename;
+
+    if(!id)
+      return;
+
+    const n=
+      e.target.textContent.trim();
+
+    if(n){
+
+      S.cols.find(
+        x=>x.id===id
+      ).name=n;
+
+    }
+
+    save();
+    render();
+
+  }
+);
+
+/* =========================
+   DRAG AND DROP
+========================= */
+
+view.addEventListener(
+  'dragstart',
+  e=>{
+
+    const c=
+      e.target.closest &&
+      e.target.closest(
+        'article.card'
+      );
+
+    if(!c)
+      return;
+
+    drag=c.dataset.id;
+
+    c.classList.add('drag');
+
+    e.dataTransfer.setData(
+      'text/plain',
+      drag
+    );
+
+    e.dataTransfer.effectAllowed=
+      'move';
+
+  }
+);
+
+view.addEventListener(
+  'dragend',
+  ()=>{
+    drag=null;
+    render();
+  }
+);
+
+view.addEventListener(
+  'dragover',
+  e=>{
+
+    const col=
+      e.target.closest('.col');
+
+    if(!col||!drag)
+      return;
+
+    e.preventDefault();
+
+    view
+      .querySelectorAll(
+        '.col.over'
+      )
+      .forEach(
+        x=>{
+          if(x!==col)
+            x.classList.remove('over');
+        }
+      );
+
+    col.classList.add('over');
+
+  }
+);
+
+view.addEventListener(
+  'drop',
+  e=>{
+
+    const col=
+      e.target.closest('.col');
+
+    if(!col||!drag)
+      return;
+
+    e.preventDefault();
+
+    let before=null;
+
+    for(
+      const el of col.querySelectorAll(
+        '.card:not(.drag)'
+      )
+    ){
+
+      const r=
+        el.getBoundingClientRect();
+
+      if(
+        e.clientY<
+        r.top+r.height/2
+      ){
+
+        before=
+          el.dataset.id;
+
+        break;
+
+      }
+
+    }
+
+    const i=
+      S.cards.findIndex(
+        x=>x.id===drag
+      );
+
+    if(i<0)
+      return;
+
+    const[c]=
+      S.cards.splice(i,1);
+
+    c.col=
+      col.dataset.id;
+
+    const j=
+      before
+        ?S.cards.findIndex(
+          x=>x.id===before
+        )
+        :-1;
+
+    if(j<0)
+      S.cards.push(c);
+    else
+      S.cards.splice(j,0,c);
+
+    save();
+
+  }
+);
+
+/* =========================
+   NAVEGAÇÃO
+========================= */
+
+$('tabs').addEventListener(
+  'click',
+  e=>{
+
+    const b=
+      e.target.closest('.tab');
+
+    if(b){
+
+      tab=b.dataset.t;
+
+      render();
+
+    }
+
+  }
+);
+
+$('q').addEventListener(
+  'input',
+  e=>{
+
+    q=
+      e.target.value
+        .trim()
+        .toLowerCase();
+
+    render();
+
+  }
+);
+
+$('chips').addEventListener(
+  'click',
+  e=>{
+
+    const b=
+      e.target.closest('.chip');
+
+    if(!b)
+      return;
+
+    filter=b.dataset.f;
+
+    document
+      .querySelectorAll(
+        '#chips .chip'
+      )
+      .forEach(
+        x=>
+          x.setAttribute(
+            'aria-pressed',
+            x===b
+          )
+      );
+
+    render();
+
+  }
+);
+
+/* =========================
+   BACKUP
+========================= */
+
+$('bkbtn').onclick=()=>{
+
+  $('bk').value=
+    JSON.stringify(
+      S,
+      null,
+      1
+    );
+
+  $('bkmsg').textContent='';
+
+  $('bdlg').showModal();
+
+};
+
+$('bk-copy').onclick=
+  async()=>{
+
+    $('bk').select();
+
+    try{
+
+      await navigator.clipboard.writeText(
+        $('bk').value
+      );
+
+      $('bkmsg').textContent=
+        'Texto copiado.';
+
+    }catch(e){
+
+      $('bkmsg').textContent=
+        'Texto selecionado. Use Ctrl+C para copiar.';
+
+    }
+
+  };
+
+$('bk-load').onclick=()=>{
+
+  try{
+
+    const o=
+      JSON.parse(
+        $('bk').value
+      );
+
+    if(
+      !Array.isArray(o.cols)||
+      !o.cols.length||
+      !Array.isArray(o.cards)
+    )
+      throw 0;
+
+    S=
+      Object.assign(
+        def(),
+        o
+      );
+
+    S.pomo=
+      Object.assign(
+        {
+          w:25,
+          s:5,
+          l:15,
+          log:{}
+        },
+        o.pomo
+      );
+
+    if(!Array.isArray(S.dreams)) S.dreams=[];
+    if(typeof S.calendar!=='string') S.calendar='';
+    if(!['auto','light','dark'].includes(S.theme)) S.theme='auto';
+
+    ['habits','blocks','dreams']
+      .forEach(k=>{
+        if(!Array.isArray(S[k]))
+          S[k]=[];
+      });
+
+    P.run=false;
+
+    P.left=
+      S.pomo[P.mode]*60;
+
+    save();
+    render();
+
+    $('bdlg').close();
+
+  }catch(e){
+
+    $('bkmsg').textContent=
+      'Esse texto não é um backup válido. Cole o texto completo copiado antes.';
+
+  }
+
+};
+
+$('themeBtn').onclick=()=>{
+  S.theme=(S.theme||'auto')==='dark'?'light':(S.theme||'auto')==='light'?'auto':'dark';
+  applyTheme(); save();
+};
+function applyTheme(){
+  if(S.theme==='dark'||S.theme==='light') document.documentElement.dataset.theme=S.theme;
+  else document.documentElement.removeAttribute('data-theme');
+  $('themeBtn').textContent='Tema: '+(S.theme==='dark'?'Escuro':S.theme==='light'?'Claro':'Automático');
+}
+$('calendarBtn').onclick=()=>{ if(S.calendar) window.open(S.calendar,'_blank','noopener'); else { tab='semana'; render(); setTimeout(()=>$('calendarLink')?.focus(),0); } };
+
+view.addEventListener('submit',e=>{
+  if(e.target.id==='calendarForm'){
+    e.preventDefault(); const v=$('calendarLink').value.trim();
+    S.calendar=/^https?:\/\//i.test(v)?v:''; save(); render();
+  }
+});
+view.addEventListener('click',e=>{
+  const t=e.target;
+  if(t.id==='openCalendar'&&S.calendar) window.open(S.calendar,'_blank','noopener');
+  if(t.id==='newDream') openDream();
+  const d=t.closest('[data-dream]'); if(d) openDream(d.dataset.dream);
+});
+function openDream(id){
+  editingDream=id||null; const x=id?S.dreams.find(d=>d.id===id):null;
+  $('st').textContent=x?'Editar sonho':'Novo sonho'; $('s-title').value=x?.title||''; $('s-goal').value=x?.goal||''; $('s-due').value=x?.due||'';
+  $('s-progress').value=+x?.progress||0; $('s-pv').textContent=(+x?.progress||0)+'%'; $('s-next').value=x?.next||''; $('s-photo').value=''; $('s-del').hidden=!x; $('sdlg').showModal();
+}
+$('s-progress').oninput=()=>$('s-pv').textContent=$('s-progress').value+'%';
+$('sf').onsubmit=async e=>{
+  e.preventDefault(); const file=$('s-photo').files[0]; let photo=editingDream?(S.dreams.find(x=>x.id===editingDream)?.photo||''):'';
+  if(file) photo=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(file)});
+  const v={title:$('s-title').value.trim(),goal:$('s-goal').value.trim(),due:$('s-due').value,progress:+$('s-progress').value,next:$('s-next').value.trim(),photo};
+  if(!v.title)return; if(editingDream) Object.assign(S.dreams.find(x=>x.id===editingDream),v); else S.dreams.push({id:uid(),...v}); save(); render(); $('sdlg').close();
+};
+$('s-del').onclick=()=>{S.dreams=S.dreams.filter(x=>x.id!==editingDream);save();render();$('sdlg').close()};
+
+applyTheme();
+
+/* =========================
+   INICIALIZAÇÃO
+========================= */
+
+render();
+
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function(){
+    navigator.serviceWorker.register('./sw.js').catch(function(){});
+  });
+}
+</script>
+</body>
+</html>
